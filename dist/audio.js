@@ -8,7 +8,7 @@ class Audio {
         this.play = (note) => {
             if (!this.ctx || !this.out)
                 throw new Error("Audio context not set");
-            const osc = this.createOsc("triangle", notes[note]);
+            const osc = this.createOsc("triangle", notes[4][note]);
             const gain = this.createGain(osc, this.out, 0);
             gain.gain.setValueAtTime(0, this.ctx.currentTime);
             this.PLAYING[note] = { osc: osc, gain: gain, playing: true };

@@ -8,8 +8,158 @@
     <title>Keyboard</title>
 </head>
 <body>
-    <div class="display"></div>
-    <div class="keyboard">
+    <div class="oscillators">
+        <span>Osc</span>
+        <div class="osc1">
+            <span>Osc1</span>
+            <div>
+                <label for="type">Type</label>
+                <input type="range" name="type" id="type">
+            </div>
+            <div>
+                <label for="mix">Mix</label>
+                <input type="range" name="mix" id="mix">
+            </div>
+        </div>
+        <!-- <hr class="seperator subseparator"> -->
+        <div class="osc2">
+            <span>Osc2</span>
+            <div>
+                <label for="type">Type</label>
+                <input type="range" name="type" id="type">
+            </div>
+            <div>
+                <label for="octave">Octave</label>
+                <input type="range" name="octave" id="octave">
+            </div>
+            <div>
+                <label for="type">Semis</label>
+                <input type="range" name="semis" id="semis">
+            </div>
+            <div>
+                <label for="type">Cents</label>
+                <input type="range" name="cents" id="cents">
+            </div>
+        </div>
+    </div>
+
+    <div class="filter">
+            <span>Filter</span>
+            <div class="base">
+            <div>
+                <label for="type">Type</label>
+                <input type="range" name="type" id="type">
+            </div>
+            <div>
+                <label for="freq">Frequency</label>
+                <input type="range" name="freq" id="freq">
+            </div>
+            <div>
+                <label for="q">Ressinance</label>
+                <input type="range" name="q" id="q">
+            </div>
+            <div>
+                <label for="gain">Gain</label>
+                <input type="range" name="gain" id="gain">
+            </div>
+        </div>
+        <div class="adsr">
+            <div>
+                <label for="filAttack">A</label>
+                <input type="range" name="filAttack" id="filAttack">
+            </div>
+            <div>
+                <label for="filDecay">D</label>
+                <input type="range" name="filDecay" id="filDecay">
+            </div>
+            <div>
+                <label for="filSustain">S</label>
+                <input type="range" name="filSustain" id="filSustain">
+            </div>
+            <div>
+                <label for="filRelease">R</label>
+                <input type="range" name="filRelease" id="filRelease">
+            </div>
+        </div>
+    </div>
+
+    <div class="extra">
+        <div class="visualiser"></div>
+        <div class="empty"></div>
+    </div>
+
+    <div class="lfo">
+            <span>LFO</span>
+            <div class="base">
+            <div>
+                <label for="type">Type</label>
+                <input type="range" name="type" id="type">
+            </div>
+            <div>
+                <label for="rate">Rate</label>
+                <input type="range" name="rate" id="rate">
+            </div>
+        </div>
+
+        <div class="mod">
+            <div>
+                <label for="oscMix">Osc Mix</label>
+                <input type="range" name="oscMix" id="oscMix">
+            </div>
+            <div>
+                <label for="oscPitch">Osc Pitch</label>
+                <input type="range" name="oscPitch" id="oscPitch">
+            </div>
+            <div>
+                <label for="oscSemi">Osc Semis</label>
+                <input type="range" name="oscSemi" id="oscSemi">
+            </div>
+            <div>
+                <label for="oscCents">Osc Cents</label>
+                <input type="range" name="oscCents" id="oscCents">
+            </div>
+            <div>
+                <label for="filFreq">Fil Freq</label>
+                <input type="range" name="filFreq" id="filFreq">
+            </div>
+            <div>
+                <label for="filQ">Fil Q</label>
+                <input type="range" name="filQ" id="filQ">
+            </div>
+            <div>
+                <label for="fgain">Fil. Gain</label>
+                <input type="range" name="fgain" id="fgain">
+            </div>
+        </div>
+    </div>
+
+    <div class="envelope">
+        <span>Amp</span>
+        <div class="adsr">
+            <div>
+                <label for="attack">A</label>
+                <input type="range" name="attack" id="attck">
+            </div>
+            <div>
+                <label for="decay">D</label>
+                <input type="range" name="decay" id="decay">
+            </div>
+            <div>
+                <label for="sustain">S</label>
+                <input type="range" name="sustain" id="sustain">
+            </div>
+            <div>
+                <label for="release">R</label>
+                <input type="range" name="release" id="release">
+            </div>
+        </div>
+        <div class="volume">
+            <label for="volume">Volume</label>
+            <input type="range" name="volume" id="volume">
+        </div>
+    </div>
+    <!-- <div class="display"></div> -->
+    <!-- <div class="keyboard">
         <input type="button" value="" name="C"  id="C"  class="white key">
         <div class="sharp">
             <input type="button" value="" name="Db" id="Db" class="black key">
@@ -37,6 +187,6 @@
             <input type="button" value="" name="Bb" id="Bb" class="black key">
             <input type="button" value="" name="B"  id="B"  class="white key">
         </div>
-    </div>
+    </div> -->
 </body>
 </html>

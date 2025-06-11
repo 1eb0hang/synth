@@ -14,7 +14,6 @@ interface Osc{
 
 class Audio{
     private ctx:AudioContext|undefined;
-    // private gain:GainNode|undefined;
     private out:AudioDestinationNode|undefined;
     private readonly envelope:Envelope;
     private readonly MAX_ENV_TIME:number;
@@ -46,7 +45,7 @@ class Audio{
     readonly play = (note:string):void=>{
         if(!this.ctx || ! this.out) throw new Error("Audio context not set");
 
-        const osc = this.createOsc("triangle", notes[note]);
+        const osc = this.createOsc("triangle", notes[4][note]);
         const gain = this.createGain(osc, this.out, 0);
         
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
