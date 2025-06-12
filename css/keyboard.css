@@ -1,36 +1,3 @@
-
-@import "./form.css";
-
-*{
-    margin: 0;
-    padding: 0;
-
-    font-family: sans;
-    color: #efefefff;
-}
-
-body{
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-
-    /* background: linear-gradient( rgb(236, 175, 41), rgb(243, 239, 222), rgb(128, 188, 223)); */
-    background: #222222ff;
-    /* overflow:hidden; */
-}
-
-.extra{
-    background-color: blue;
-    width:auto;
-    height: 100%;
-}
-
-.display{}
-
 .keyboard {
     display: flex;
     flex-direction: row;

@@ -1,4 +1,4 @@
-import notes from "./notes.js";
+import NOTES from "./notes.js";
 
 interface Envelope{
     attack:number;
@@ -12,9 +12,16 @@ interface Osc{
     gain:GainNode
 }
 
+interface Filter{
+    node:BiquadFilterNode;
+    envelope:Envelope;
+}
+
 class Audio{
     private ctx:AudioContext|undefined;
     private out:AudioDestinationNode|undefined;
+    private readonly filter:Filter|undefined;
+    private oscType:OscillatorType;
     private readonly envelope:Envelope;
     private readonly MAX_ENV_TIME:number;
 
@@ -32,9 +39,18 @@ class Audio{
             release:0.2
         };
 
+        this.oscType = "sine";
         this.PLAYING = {};
         this.MAX_ENV_TIME = 2;
         if(!ctx) return;
+    }
+
+    readonly isContextValid = ()=>{
+        return !(this.ctx === undefined);
+    }
+
+    readonly setOscType = (type:OscillatorType)=>{
+        this.oscType = type;
     }
 
     readonly setAudioContext = (ctx:AudioContext)=>{
@@ -45,7 +61,7 @@ class Audio{
     readonly play = (note:string):void=>{
         if(!this.ctx || ! this.out) throw new Error("Audio context not set");
 
-        const osc = this.createOsc("triangle", notes[4][note]);
+        const osc = this.createOsc(this.oscType, NOTES[4][note]);
         const gain = this.createGain(osc, this.out, 0);
         
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
@@ -63,7 +79,7 @@ class Audio{
         delete this.PLAYING[note];
     }
 
-    private readonly createOsc = (type:"sine"|"triangle"|"square"|"sawtooth", frequency:number, detune?:number):OscillatorNode=>{
+    private readonly createOsc = (type:OscillatorType, frequency:number, detune?:number):OscillatorNode=>{
         if (!this.ctx){
             throw new Error("Audio context not set");
         }

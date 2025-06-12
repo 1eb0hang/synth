@@ -1,0 +1,31 @@
+
+.slider{
+    user-select: none  ;
+    font-size: 10px;
+    margin-inline: 10px;
+
+    display:flex;
+    flex-direction: row;
+    gap:5px;
+
+    & :not(.vertical) input[type="range"]{
+        height: 10px;
+    }
+
+    & input[type="range"]{
+        -webkit-appearance: none;
+        width: 100%;
+        background: transparent;
+    }
+}
+
+& .vertical{
+    & input[type="range"] {
+        writing-mode: vertical-lr;
+        direction: rtl;
+    }
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+

@@ -1,0 +1,9 @@
+
+.filter{
+    & > :last-child, 
+    & .adsr,
+    & .base{
+        display: flex;
+        flex-direction: row;
+    }
+}

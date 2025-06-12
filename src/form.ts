@@ -6,7 +6,7 @@ export function createAudioStartForm():HTMLElement {
     form.appendChild(subform);
     
     const promptText = document.createElement("span");
-    promptText.innerText = "Starting audio?";
+    promptText.innerText = "Audio Initialized";
 
     const input = document.createElement("input");
     input.setAttribute("type", "submit");

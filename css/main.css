@@ -1,0 +1,36 @@
+
+@import "./import.css";
+
+*{
+    margin: 0;
+    padding: 0;
+
+    font-family: sans;
+    color: #efefefff;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+    
+    justify-content: center;
+    align-items: center;
+    /* overflow: hidden; */
+    background: #222222ff;
+    /* overflow:hidden; */
+}
+
+.controls{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+div{
+    border:solid 1px white;
+}
+
+.extra{
+    background-color: blue;
+    width:auto;
+    height: 100%;
+}

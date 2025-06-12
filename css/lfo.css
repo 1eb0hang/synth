@@ -1,0 +1,11 @@
+ 
+.lfo{
+
+    grid-column: 1 / 3;
+
+    & > :last-child,
+    & .mod{
+        display: flex;
+        flex-direction: row;
+    }
+}

@@ -1,28 +1,48 @@
 import Audio from "./audio.js";
 import {createAudioStartForm, formEventListener} from "./form.js";
+import KEYBOARD from "./keyboard.js";
+import {setUpControlsEventLinsteners } from "./ui.js";
 
 const audio = new Audio();
 
+const Keydown = (key:string)=>{
+    if(key in KEYBOARD){
+        // playing = true;
+    }
+}
+
+const Keyup = (key:string)=>{
+    // playing = false;
+}
+
+
 const main = ()=>{
-    createAudioStartForm()
-    formEventListener(():void=>{audio.setAudioContext(new AudioContext())})
+    createAudioStartForm();
+    formEventListener(():void=>{
+        audio.setAudioContext(new AudioContext());
+        setUpControlsEventLinsteners(audio);
+    })
 
-    const keyboard = document.querySelectorAll<HTMLInputElement>(".key");
+    const virtualKeyboard = document.querySelectorAll<HTMLInputElement>(".key");
 
-    if (!keyboard) return;
+    if (!virtualKeyboard) return;
     console.log("keboard initialised");
 
-    for(const key in keyboard){
-        if(!(keyboard[key] instanceof HTMLInputElement)) continue;
-        const self = keyboard[key];
+    // document.addEventListener("keydown", (e:KeyboardEvent)=>{Keydown(e.key);})
+    // document.addEventListener("keyup", (e:KeyboardEvent)=>{Keyup(e.key);})
+
+    for(const key in virtualKeyboard){
+        if(!(virtualKeyboard[key] instanceof HTMLInputElement)) continue;
+         
+        const self = virtualKeyboard[key];
         self.addEventListener("mousedown", ()=>{
             // TODO: check if mousemove while mousedown
-            audio.play(keyboard[key].name);
+            audio.play(virtualKeyboard[key].name);
         })
 
         self.addEventListener("mouseup", ()=>{
             //TODO: check if mouse down happened on this key
-            audio.stop(keyboard[key].name);
+            audio.stop(virtualKeyboard[key].name);
         })
 
         // TODO: switch to solidjs
@@ -37,6 +57,5 @@ const main = ()=>{
         // TODO: display current key/chord on display
     }
 }
-
 
 main()

@@ -1,0 +1,63 @@
+import Audio from "./audio";
+
+interface ControlList {
+    [index:string]:HTMLElement
+}
+
+export const getSynthControls = ():ControlList =>{
+    const inputList = document.querySelector<HTMLDivElement>(".controls")?.querySelectorAll("input");
+    if (!inputList) throw new Error("Synth controls not initialized");
+
+    const controlList:ControlList = {};
+    // console.log(controlList)
+    for(const idx in inputList){
+        if(isNaN(Number(idx))) continue;
+        controlList[idx] = inputList[idx];
+        controlList[inputList[idx].name] = inputList[idx];
+    }
+
+    console.log(controlList);
+    return controlList;
+}
+
+
+export const setUpControlsEventLinsteners = (audio:Audio)=>{
+    if(!audio.isContextValid()) throw new Error("Valid audio context not found");
+    console.log("Audio context nisialized");
+
+    const controlList = getSynthControls();
+    
+    controlList.osc1Type.addEventListener("input", (e)=>{})
+    controlList.osc1Mix.addEventListener("input", (e)=>{})
+    controlList.osc2Type.addEventListener("input", (e)=>{})
+    controlList.osc2Octave.addEventListener("input", (e)=>{})
+    controlList.osc2Semis.addEventListener("input", (e)=>{})
+    controlList.osc2Cents.addEventListener("input", (e)=>{})
+
+    controlList.filType.addEventListener("input", (e)=>{})
+    controlList.filFreq.addEventListener("input", (e)=>{})
+    controlList.filQ.addEventListener("input", (e)=>{})
+    controlList.filGain.addEventListener("input", (e)=>{})
+    controlList.filAttack.addEventListener("input", (e)=>{})
+    controlList.filDecay.addEventListener("input", (e)=>{})
+    controlList.filSustain.addEventListener("input", (e)=>{})
+    controlList.filRelease.addEventListener("input", (e)=>{})
+    
+    controlList.lfoType.addEventListener("input", (e)=>{})
+    controlList.lfoRate.addEventListener("input", (e)=>{})
+    controlList.oscModMix.addEventListener("input", (e)=>{})
+    controlList.oscModPitch.addEventListener("input", (e)=>{})
+    controlList.oscModSemi.addEventListener("input", (e)=>{})
+    controlList.oscModCents.addEventListener("input", (e)=>{})
+    controlList.filModFreq.addEventListener("input", (e)=>{})
+    controlList.filModQ.addEventListener("input", (e)=>{})
+    controlList.filModGain.addEventListener("input", (e)=>{})
+    
+    controlList.attack.addEventListener("input", (e)=>{})
+    controlList.decay.addEventListener("input", (e)=>{})
+    controlList.sustain.addEventListener("input", (e)=>{})
+    controlList.release.addEventListener("input", (e)=>{})
+    controlList.volume.addEventListener("input", (e)=>{})
+}
+
+export default ControlList;

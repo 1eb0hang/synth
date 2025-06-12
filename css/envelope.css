@@ -1,0 +1,7 @@
+.envelope{
+    & > :last-child,
+    & .adsr{
+        display: flex;
+        flex-direction: row;
+    }
+}
