@@ -4,7 +4,7 @@ interface Envelope{
     attack:number;
     decay:number;
     sustain:number;
-    release:number;
+    release?:number;
 }
 
 interface Osc{
@@ -15,6 +15,7 @@ interface Osc{
 interface Filter{
     node:BiquadFilterNode;
     envelope:Envelope;
+    contour:number
 }
 
 interface Settings{
@@ -41,6 +42,8 @@ class Synth{
     
     private filter:Filter|undefined;
     private readonly envelope:Envelope;
+
+    private globalVolume:GainNode|undefined
     private readonly MAX_ENV_TIME:number;
 
     private readonly PLAYING:PlayingList; 
@@ -75,22 +78,23 @@ class Synth{
                 decay:0,
                 sustain:1,
                 release:0
-            }
+            },
+            contour:0
         };
         this.filter.node.type = "lowpass";
-
-        this.filter.node.connect(this.out); //TODO: filter env
-        
+        this.globalVolume = this.createGain(this.filter.node, this.out, 1);
     }
 
     readonly play = (note:string):void=>{
-        if(!this.ctx || ! this.out) throw new Error("Audio context not set");
+        if(!this.ctx || ! this.out || !this.filter) throw new Error("Audio context not set");
 
+        // TODO:Update ui and internal values to be insync before playing
         const osc = this.createOsc(this.osc1Type, NOTES[4][note]);
+        // const gain = this.createGain(osc, this.filter.node, 0);
         const gain = this.createGain(osc, this.out, 0);
         
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
-        
+
         this.PLAYING[note] = {osc:osc, gain:gain, playing:true};
 
         osc.start();
@@ -150,7 +154,8 @@ class Synth{
         gain.gain.cancelScheduledValues(currentTime);
         gain.gain.setValueAtTime(currentGainValue, currentTime);
 
-        const releaseEnd = currentTime + (this.envelope.release*this.MAX_ENV_TIME);
+        const release = this.envelope.release || 0
+        const releaseEnd = currentTime + (release*this.MAX_ENV_TIME);
 
         gain.gain.linearRampToValueAtTime(0, releaseEnd);
     }
@@ -158,6 +163,7 @@ class Synth{
     // OSCILLATORS
     readonly setOsc1Type = (type:OscillatorType)=>{
         this.osc1Type = type;
+        console.log("New Osc type: ", type);
     }
 
     // ENVELOPE
@@ -166,7 +172,7 @@ class Synth{
         if(value<0) value = 0;
 
         this.envelope.attack = value;
-        console.log(value);
+        console.log("New Attack Vlue: ",value);
     }
 
     readonly setDecay = (value:number)=>{
@@ -174,7 +180,7 @@ class Synth{
         if(value<0) value = 0;
 
         this.envelope.decay = value;
-        console.log(value);
+        console.log("New Decay Vlue: ",value);
     }
 
     readonly setSustain = (value:number)=>{
@@ -182,7 +188,7 @@ class Synth{
         if(value<0) value = 0;
 
         this.envelope.sustain = value;
-        console.log(value);
+        console.log("New Sustain Vlue: ",value);
     }
 
     readonly setRelease = (value:number)=>{
@@ -190,48 +196,63 @@ class Synth{
         if(value<0) value = 0;
 
         this.envelope.release = value;
-        console.log(value);
+        console.log("New Release Vlue: ",value);
     }
 
     // FILTERS
     readonly setFilterType =(type:BiquadFilterType)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.node.type = type;
+        console.log("New Filter Type: ",type)
     }
 
     readonly setFilterFreq =(freq:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.node.frequency.value = freq;
+        console.log("New Filter Freq Vlue: ",freq);
     }
 
     readonly setFilterQ =(value:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.node.Q.value = value;
+        console.log("New Filter Q Vlue: ",value);
     }
 
     readonly setFilterGain =(value:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.node.gain.value = value;
+        console.log("New Filter Gain Vlue: ",value);
     }
 
     readonly setFilterAttack =(value:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.envelope.attack = value;
+        console.log("New Filter Attack Vlue: ",value);
     }
 
     readonly setFilterDecay =(value:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.envelope.decay = value;
+        console.log("New Filter Decay Vlue: ",value);
     }
 
     readonly setFilterSustain =(value:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
         this.filter.envelope.sustain = value;
+        console.log("New Filter Sustain Vlue: ",value);
     }
 
-    readonly setFilterRelease =(value:number)=>{
+    readonly setFilterContour =(value:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
-        this.filter.envelope.release = value;
+        this.filter.contour = value;
+        console.log("New Filter Contour Vlue: ",value);
+    }
+
+    readonly setVolume=(value:number)=>{
+        if(!this.globalVolume) throw new Error("Audio context not set");
+
+        this.globalVolume.gain.value = value;
+        console.log("New volume: ",value);
     }
 }
 

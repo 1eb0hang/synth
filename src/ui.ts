@@ -42,13 +42,13 @@ export const setUpControlsEventLinsteners = (audio:Synth)=>{
     controlList.osc2Cents.addEventListener("input", (e)=>{})
 
     controlList.filType.addEventListener("input", (e)=>{audio.setFilterType(numToFilterType(Number(controlList.filType.value)))})
-    controlList.filFreq.addEventListener("input", (e)=>{})
-    controlList.filQ.addEventListener("input", (e)=>{})
-    controlList.filGain.addEventListener("input", (e)=>{})
-    controlList.filAttack.addEventListener("input", (e)=>{})
-    controlList.filDecay.addEventListener("input", (e)=>{})
-    controlList.filSustain.addEventListener("input", (e)=>{})
-    controlList.filContour.addEventListener("input", (e)=>{})
+    controlList.filFreq.addEventListener("input", (e)=>{audio.setFilterFreq(Number(controlList.filFreq.value))})// TODO:
+    controlList.filQ.addEventListener("input", (e)=>{audio.setFilterQ(Number(controlList.filQ.value))})
+    controlList.filGain.addEventListener("input", (e)=>{audio.setFilterGain(Number(controlList.filGain.value))})
+    controlList.filAttack.addEventListener("input", (e)=>{audio.setFilterAttack(Number(controlList.filAttack.value))})
+    controlList.filDecay.addEventListener("input", (e)=>{audio.setFilterDecay(Number(controlList.filDecay.value))})
+    controlList.filSustain.addEventListener("input", (e)=>{audio.setFilterSustain(Number(controlList.filSustain.value))})
+    controlList.filContour.addEventListener("input", (e)=>{audio.setFilterContour(Number(controlList.filContour.value))})
     
     // controlList.lfoType.addEventListener("input", (e)=>{audio.setOsc1Type(numToOscType(Number(controlList.osc1Type.value)))})
     controlList.lfoRate.addEventListener("input", (e)=>{})
@@ -64,7 +64,7 @@ export const setUpControlsEventLinsteners = (audio:Synth)=>{
     controlList.decay.addEventListener("input", (e)=>{audio.setDecay(Number(controlList.decay.value))})
     controlList.sustain.addEventListener("input", (e)=>{audio.setSustain(Number(controlList.sustain.value))})
     controlList.release.addEventListener("input", (e)=>{audio.setRelease(Number(controlList.release.value))})
-    controlList.volume.addEventListener("input", (e)=>{console.log(e)})
+    controlList.volume.addEventListener("input", (e)=>{audio.setVolume(Number(controlList.volume.value))})
 }
 
 export default ControlList;
