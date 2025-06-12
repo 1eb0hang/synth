@@ -1,9 +1,9 @@
-import Audio from "./audio.js";
+import Synth from "./audio.js";
 import {createAudioStartForm, formEventListener} from "./form.js";
 import KEYBOARD from "./keyboard.js";
 import {setUpControlsEventLinsteners } from "./ui.js";
 
-const audio = new Audio();
+const audio = new Synth();
 
 const Keydown = (key:string)=>{
     if(key in KEYBOARD){

@@ -17,21 +17,38 @@ interface Filter{
     envelope:Envelope;
 }
 
-class Audio{
+interface Settings{
+
+    volume:number
+}
+
+type PlayingList = {
+    [index:string]:{
+        osc:OscillatorNode, 
+        gain:GainNode, 
+        playing:boolean
+    }
+}
+
+class Synth{
+    // TODO: audio context not set error
     private ctx:AudioContext|undefined;
     private out:AudioDestinationNode|undefined;
-    private readonly filter:Filter|undefined;
-    private oscType:OscillatorType;
+
+    private osc1Type:OscillatorType;
+    // private osc2Type:OscillatorType;
+    // private osc2Octave:number;
+    
+    private filter:Filter|undefined;
     private readonly envelope:Envelope;
     private readonly MAX_ENV_TIME:number;
 
-    private readonly PLAYING:{[index:string]:
-        {osc:OscillatorNode, gain:GainNode, playing:boolean}
-    }; 
+    private readonly PLAYING:PlayingList; 
 
     constructor(ctx?:AudioContext){
         this.ctx = ctx;
-        
+        this.filter = undefined;
+
         this.envelope = {
             attack:0.2,
             decay:1,
@@ -39,63 +56,37 @@ class Audio{
             release:0.2
         };
 
-        this.oscType = "sine";
+        this.osc1Type = "square";
         this.PLAYING = {};
         this.MAX_ENV_TIME = 2;
-        if(!ctx) return;
     }
 
     readonly isContextValid = ()=>{
         return !(this.ctx === undefined);
     }
 
-    readonly setOscType = (type:OscillatorType)=>{
-        this.oscType = type;
-    }
-
-    // readonly setFilterResonance()
-
-    readonly setAttack = (value:number)=>{
-        if(value>1) value = 1;
-        if(value<0) value = 0;
-
-        this.envelope.attack = value;
-        console.log(value);
-    }
-
-    readonly setDecay = (value:number)=>{
-        if(value>1) value = 1;
-        if(value<0) value = 0;
-
-        this.envelope.decay = value;
-        console.log(value);
-    }
-
-    readonly setSustain = (value:number)=>{
-        if(value>1) value = 1;
-        if(value<0) value = 0;
-
-        this.envelope.sustain = value;
-        console.log(value);
-    }
-
-    readonly setRelease = (value:number)=>{
-        if(value>1) value = 1;
-        if(value<0) value = 0;
-
-        this.envelope.release = value;
-        console.log(value);
-    }
-
     readonly setAudioContext = (ctx:AudioContext)=>{
         this.ctx = ctx;
         this.out = this.ctx.destination;
+        this.filter = {
+            node:this.ctx.createBiquadFilter(),
+            envelope:{
+                attack:0,
+                decay:0,
+                sustain:1,
+                release:0
+            }
+        };
+        this.filter.node.type = "lowpass";
+
+        this.filter.node.connect(this.out); //TODO: filter env
+        
     }
 
     readonly play = (note:string):void=>{
         if(!this.ctx || ! this.out) throw new Error("Audio context not set");
 
-        const osc = this.createOsc(this.oscType, NOTES[4][note]);
+        const osc = this.createOsc(this.osc1Type, NOTES[4][note]);
         const gain = this.createGain(osc, this.out, 0);
         
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
@@ -163,6 +154,85 @@ class Audio{
 
         gain.gain.linearRampToValueAtTime(0, releaseEnd);
     }
+
+    // OSCILLATORS
+    readonly setOsc1Type = (type:OscillatorType)=>{
+        this.osc1Type = type;
+    }
+
+    // ENVELOPE
+    readonly setAttack = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.attack = value;
+        console.log(value);
+    }
+
+    readonly setDecay = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.decay = value;
+        console.log(value);
+    }
+
+    readonly setSustain = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.sustain = value;
+        console.log(value);
+    }
+
+    readonly setRelease = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.release = value;
+        console.log(value);
+    }
+
+    // FILTERS
+    readonly setFilterType =(type:BiquadFilterType)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.node.type = type;
+    }
+
+    readonly setFilterFreq =(freq:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.node.frequency.value = freq;
+    }
+
+    readonly setFilterQ =(value:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.node.Q.value = value;
+    }
+
+    readonly setFilterGain =(value:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.node.gain.value = value;
+    }
+
+    readonly setFilterAttack =(value:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.envelope.attack = value;
+    }
+
+    readonly setFilterDecay =(value:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.envelope.decay = value;
+    }
+
+    readonly setFilterSustain =(value:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.envelope.sustain = value;
+    }
+
+    readonly setFilterRelease =(value:number)=>{
+        if(!this.filter) throw new Error("Audio context not set");
+        this.filter.envelope.release = value;
+    }
 }
 
-export default Audio
+export default Synth
