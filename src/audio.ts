@@ -53,6 +53,40 @@ class Audio{
         this.oscType = type;
     }
 
+    // readonly setFilterResonance()
+
+    readonly setAttack = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.attack = value;
+        console.log(value);
+    }
+
+    readonly setDecay = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.decay = value;
+        console.log(value);
+    }
+
+    readonly setSustain = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.sustain = value;
+        console.log(value);
+    }
+
+    readonly setRelease = (value:number)=>{
+        if(value>1) value = 1;
+        if(value<0) value = 0;
+
+        this.envelope.release = value;
+        console.log(value);
+    }
+
     readonly setAudioContext = (ctx:AudioContext)=>{
         this.ctx = ctx;
         this.out = this.ctx.destination;

@@ -1,7 +1,7 @@
 import Audio from "./audio";
 
 interface ControlList {
-    [index:string]:HTMLElement
+    [index:string]:HTMLInputElement
 }
 
 export const getSynthControls = ():ControlList =>{
@@ -12,8 +12,8 @@ export const getSynthControls = ():ControlList =>{
     // console.log(controlList)
     for(const idx in inputList){
         if(isNaN(Number(idx))) continue;
-        controlList[idx] = inputList[idx];
-        controlList[inputList[idx].name] = inputList[idx];
+        controlList[idx] = inputList[idx] as HTMLInputElement;
+        controlList[inputList[idx].name] = inputList[idx] as HTMLInputElement;
     }
 
     console.log(controlList);
@@ -53,10 +53,10 @@ export const setUpControlsEventLinsteners = (audio:Audio)=>{
     controlList.filModQ.addEventListener("input", (e)=>{})
     controlList.filModGain.addEventListener("input", (e)=>{})
     
-    controlList.attack.addEventListener("input", (e)=>{})
-    controlList.decay.addEventListener("input", (e)=>{})
-    controlList.sustain.addEventListener("input", (e)=>{})
-    controlList.release.addEventListener("input", (e)=>{})
+    controlList.attack.addEventListener("input", (e)=>{audio.setAttack(Number(controlList.attack.value))})
+    controlList.decay.addEventListener("input", (e)=>{audio.setDecay(Number(controlList.decay.value))})
+    controlList.sustain.addEventListener("input", (e)=>{audio.setSustain(Number(controlList.sustain.value))})
+    controlList.release.addEventListener("input", (e)=>{audio.setRelease(Number(controlList.release.value))})
     controlList.volume.addEventListener("input", (e)=>{})
 }
 
