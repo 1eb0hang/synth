@@ -23,7 +23,7 @@ const Keyup = (e:KeyboardEvent, virtualKeyboard:NodeListOf<HTMLInputElement>)=>{
 
     const key = e.key;
     if(key in KEYBOARD){
-        audio.stop(KEYBOARD[key].note as NoteName);
+        audio.stop(KEYBOARD[key].note as NoteName, audio.getCurrentOctave()+KEYBOARD[key].octave);
         console.log("Stoping ", key);
     }
 }

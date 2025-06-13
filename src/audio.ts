@@ -104,11 +104,12 @@ class Synth{
         if(!this.ctx || ! this.out || !this.filter) throw new Error("Audio context not set");
 
         // TODO:Update ui and internal values to be insync before playing
-        let currentOct = octave||this.CURRENT_OCTAVE;
-        if(currentOct>7)currentOct = 7;
-        if(currentOct<1)currentOct = 1;
-        const osc1 = this.createOsc(this.osc1Type, NOTES[currentOct][note]);
-        const osc2 = this.createOsc(this.osc2Type, NOTES[currentOct][note], this.osc2Cents);
+        let currentOctave = octave||this.CURRENT_OCTAVE;
+        if(currentOctave>7)currentOctave = 7;
+        if(currentOctave<1)currentOctave = 1;
+
+        const osc1 = this.createOsc(this.osc1Type, NOTES[currentOctave][note]);
+        const osc2 = this.createOsc(this.osc2Type, NOTES[currentOctave][note], this.osc2Cents);
         // const nextNote = 
         // osc2.detune.value = NOTES[this.CURRENT_OCTAVE][note]-
 
@@ -132,7 +133,7 @@ class Synth{
         gain1.gain.setValueAtTime(0, this.ctx.currentTime);
         gain2.gain.setValueAtTime(0, this.ctx.currentTime);
 
-        this.PLAYING[note] = {osc:[osc1, osc2], gain:[gain1, gain2], playing:true};
+        this.PLAYING[`${note}${currentOctave}`] = {osc:[osc1, osc2], gain:[gain1, gain2], playing:true};
 
         osc1.start();
         osc2.start();
@@ -140,13 +141,19 @@ class Synth{
         this.setGainEnvelopeEnter(gain2, this.oscMix);
     }
 
-    readonly stop = (note:string):void =>{
-        this.PLAYING[note].playing = false;
-        const {gain} = this.PLAYING[note];
+    readonly stop = (note:string, octave?:number):void =>{
+        let currentOctave = octave || this.CURRENT_OCTAVE;
+        if(currentOctave>7)currentOctave = 7;
+        if(currentOctave<1)currentOctave = 1;
+
+        const key = `${note}${currentOctave}`;
+
+        this.PLAYING[key].playing = false;
+        const {gain} = this.PLAYING[key];
         
         this.setGainEnvelopExit(gain[0]);
         this.setGainEnvelopExit(gain[1]);
-        delete this.PLAYING[note];
+        delete this.PLAYING[key];
     }
 
     private readonly createOsc = (type:OscillatorType, frequency:number, detune?:number):OscillatorNode=>{
