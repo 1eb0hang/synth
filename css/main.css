@@ -34,3 +34,18 @@ div{
     width:auto;
     height: 100%;
 }
+
+.device{
+    display:flex;
+    flex-direction: row;
+}
+
+.transpose{
+    display:grid;
+    grid-template-rows: 1fr 1fr;
+    border-radius: 0;
+
+    & .btnTranspose{
+        color:#00000055;
+    }
+}

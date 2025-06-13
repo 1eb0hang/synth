@@ -112,8 +112,11 @@ class Synth{
         const directionNote = this.osc2Cents>0?this.getNextNote(note):
                                 this.osc2Cents<0?this.getPrevNote(note): 
                                 note;
+        const directionOctave = directionNote=="C"&&this.osc2Cents>0?1:
+                                directionNote=="B"&&this.osc2Cents<0?-1:0;
 
-        osc2.detune.value = (NOTES[this.CURRENT_OCTAVE][directionNote]-NOTES[this.CURRENT_OCTAVE][note])*this.osc2Cents;
+        osc2.detune.value = (NOTES[this.CURRENT_OCTAVE+directionOctave][directionNote]-NOTES[this.CURRENT_OCTAVE][note])*this.osc2Cents;
+        
         // if(this.osc2Cents>0){
         //     osc2.detune.value = (NOTES[this.CURRENT_OCTAVE][this.getNextNote(note)]-NOTES[this.CURRENT_OCTAVE][note])*this.osc2Cents
         // }else if(this.osc2Cents<0){
@@ -304,6 +307,18 @@ class Synth{
                 break; 
         }
         return res;
+    }
+
+    // KEYBOARD
+    readonly getCurrentOctave = ()=>{
+        return this.CURRENT_OCTAVE;
+    }
+
+    readonly setCurrentOctave = (octave:number)=>{
+        const value = octave>7?7:
+                      octave<1?1:octave;
+        this.CURRENT_OCTAVE = value;
+        console.log("New Current Octave: ",value);
     }
 
     // OSCILLATORS

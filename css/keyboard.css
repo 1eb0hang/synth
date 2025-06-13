@@ -5,7 +5,7 @@
     border-radius: 10px;
     background-color: black;
     
-    input{
+    & .key{
         min-width: 20px;
         border:1px solid rgba(0,0,0,0.245);
     }

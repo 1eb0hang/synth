@@ -37,7 +37,7 @@ export const setUpControlsEventLinsteners = (audio:Synth)=>{
     controlList.osc1Type.addEventListener("input", (e)=>{updateValueWithUI(controlList.osc1Type, controlList.osc1Type.value,audio.setOsc1Type)})
     // controlList.osc1Type.addEventListener("input", (e)=>{audio.setOsc1Type(Number(controlList.osc1Type.value))})
     controlList.oscMix.addEventListener("input", (e)=>{audio.setOscMix(Number(controlList.oscMix.value))})
-    // controlList.osc2Type.addEventListener("input", (e)=>{audio.setOsc1Type(numToOscType(Number(controlList.osc1Type.value)))})
+    controlList.osc2Type.addEventListener("input", (e)=>{updateValueWithUI(controlList.osc2Type, controlList.osc2Type.value,audio.setOsc2Type)})
     controlList.osc2Octave.addEventListener("input", (e)=>{
         // const value = new Log(-2, 2, ).value(Number(controlList.filFreq.value));
     })
