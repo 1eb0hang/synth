@@ -1,4 +1,4 @@
-import NOTES from "./notes.js";
+import NOTES, { NoteName } from "./notes.js";
 import Log from "./temp/log.js";
 
 interface Envelope{
@@ -37,10 +37,14 @@ class Synth{
     private ctx:AudioContext|undefined;
     private out:AudioDestinationNode|undefined;
 
+    private CURRENT_OCTAVE = 1;
+
     private oscMix:number;
     private osc1Type:OscillatorType;
     private osc2Type:OscillatorType;
-    // private osc2Octave:number;
+    private osc2Octave:number;
+    private osc2Semi:number;
+    private osc2Cents:number;
     
     private filter:Filter|undefined;
     private readonly envelope:Envelope;
@@ -63,7 +67,10 @@ class Synth{
 
         this.oscMix = 0;
         this.osc1Type = "square";
-        this.osc2Type = "sine";
+        this.osc2Type = "square";
+        this.osc2Octave = 0;
+        this.osc2Semi = 0;
+        this.osc2Cents = 0;
         this.PLAYING = {};
         this.MAX_ENV_TIME = 2;
     }
@@ -93,12 +100,25 @@ class Synth{
         this.osc1Type = controls.osc1Type.value as OscillatorType;
     }
 
-    readonly play = (note:string):void=>{
+    readonly play = (note:NoteName):void=>{
         if(!this.ctx || ! this.out || !this.filter) throw new Error("Audio context not set");
 
         // TODO:Update ui and internal values to be insync before playing
-        const osc1 = this.createOsc(this.osc1Type, NOTES[4][note]);
-        const osc2 = this.createOsc(this.osc2Type, NOTES[4][note]);
+        const osc1 = this.createOsc(this.osc1Type, NOTES[this.CURRENT_OCTAVE][note]);
+        const osc2 = this.createOsc(this.osc2Type, NOTES[this.CURRENT_OCTAVE][note], this.osc2Cents);
+        // const nextNote = 
+        // osc2.detune.value = NOTES[this.CURRENT_OCTAVE][note]-
+
+        const directionNote = this.osc2Cents>0?this.getNextNote(note):
+                                this.osc2Cents<0?this.getPrevNote(note): 
+                                note;
+
+        osc2.detune.value = (NOTES[this.CURRENT_OCTAVE][directionNote]-NOTES[this.CURRENT_OCTAVE][note])*this.osc2Cents;
+        // if(this.osc2Cents>0){
+        //     osc2.detune.value = (NOTES[this.CURRENT_OCTAVE][this.getNextNote(note)]-NOTES[this.CURRENT_OCTAVE][note])*this.osc2Cents
+        // }else if(this.osc2Cents<0){
+        //     osc2.detune.value = (NOTES[this.CURRENT_OCTAVE][this.getPrevNote(note)]-NOTES[this.CURRENT_OCTAVE][note])*this.osc2Cents
+        // }
         const gain1 = this.createGain([osc1], this.filter.node, 0);
         const gain2 = this.createGain([osc2], this.filter.node, 0);
         // const gain = this.createGain(osc, this.out, 0);
@@ -117,7 +137,6 @@ class Synth{
     readonly stop = (note:string):void =>{
         this.PLAYING[note].playing = false;
         const {gain} = this.PLAYING[note];
-        const {osc} = this.PLAYING[note];
         
         this.setGainEnvelopExit(gain[0]);
         this.setGainEnvelopExit(gain[1]);
@@ -179,6 +198,114 @@ class Synth{
         gain.gain.linearRampToValueAtTime(0, releaseEnd);
     }
 
+    private readonly getNextNote = (note:NoteName):NoteName=>{
+        let res:NoteName;
+        switch(note){
+            case "C":
+                res = "Db";
+                break;
+
+            case "Db":
+                res = "D";
+                break;
+
+            case "D":
+                res = "Eb";
+                break;
+
+            case "Eb":
+                res = "E";
+                break;
+
+            case "E":
+                res = "F";
+                break;
+
+            case "F":
+                res = "Gb";
+                break;
+
+            case "Gb":
+                res = "G";
+                break;
+
+            case "G":
+                res = "Ab";
+                break;
+
+            case "Ab":
+                res = "A";
+                break;
+
+            case "A":
+                res = "Bb";
+                break;
+
+            case "Bb":
+                res = "B";
+                break;
+
+            default:
+                res = "C";
+                break;  
+        }
+        return res;
+    }
+
+    private readonly getPrevNote = (note:NoteName):NoteName=>{
+        let res:NoteName = "C"
+        switch(note){
+            case "C":
+                res = "B";
+                break;
+            
+            case "Db":
+                res = "C";
+                break; 
+
+            case "D":
+                res = "Db";
+                break;
+
+            case "Eb":
+                res = "D";
+                break;
+
+            case "E":
+                res = "Eb";
+                break;
+
+            case "F":
+                res = "E";
+                break;
+
+            case "Gb":
+                res = "F";
+                break;
+
+            case "G":
+                res = "Gb";
+                break;
+
+            case "Ab":
+                res = "G";
+                break;
+
+            case "A":
+                res = "Ab";
+                break;
+
+            case "Bb":
+                res = "A";
+                break;
+
+            default:
+                res = "Bb";
+                break; 
+        }
+        return res;
+    }
+
     // OSCILLATORS
     readonly setOscMix = (mix:number)=>{
         this.oscMix = mix;
@@ -193,6 +320,21 @@ class Synth{
     readonly setOsc2Type = (type:number)=>{
         this.osc2Type = this.numToOscType(type);
         console.log("New Osc type: ", type);
+    }
+
+    readonly setOsc2Octave = (value:number)=>{
+        // this.osc2Octave = value;
+        // console.log("New Osc type: ", value);
+    }
+
+    readonly setOsc2Semi = (semi:number)=>{
+        // this.osc2Semi = semi;
+        // console.log("New Osc type: ", semi);
+    }
+
+    readonly setOsc2Cents = (cents:number)=>{
+        this.osc2Cents = cents;
+        console.log("New Osc type: ", cents);
     }
 
     // ENVELOPE

@@ -1,7 +1,7 @@
 type Keyboard = {[index:number]: Octave }
 // type Octave = {[index:Notes]:number}
 type Octave = {[index:string]:number}
-type Notes = "C"|"Db"|"D"|"E"|"F"|"Gb"|"G"|"Ab"|"A"|"Bb"|"B";
+export type NoteName = "C"|"Db"|"D"|"Eb"|"E"|"F"|"Gb"|"G"|"Ab"|"A"|"Bb"|"B";
 
 const NOTES:Keyboard = {
     1:{

@@ -1,6 +1,7 @@
 import Synth from "./audio.js";
 import {createAudioStartForm, formEventListener} from "./form.js";
 import KEYBOARD from "./keyboard.js";
+import { NoteName } from "./notes.js";
 import {setUpControlsEventLinsteners } from "./ui.js";
 
 const audio = new Synth();
@@ -37,7 +38,7 @@ const main = ()=>{
         const self = virtualKeyboard[key];
         self.addEventListener("mousedown", ()=>{
             // TODO: check if mousemove while mousedown
-            audio.play(virtualKeyboard[key].name);
+            audio.play(virtualKeyboard[key].name as NoteName);
         })
 
         self.addEventListener("mouseup", ()=>{
