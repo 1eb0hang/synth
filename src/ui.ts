@@ -1,4 +1,5 @@
-import Synth from "./audio";
+import Synth from "./audio.js";
+import Log from "./temp/log.js";
 
 interface ControlList {
     [index:string]:HTMLInputElement
@@ -42,7 +43,10 @@ export const setUpControlsEventLinsteners = (audio:Synth)=>{
     controlList.osc2Cents.addEventListener("input", (e)=>{})
 
     controlList.filType.addEventListener("input", (e)=>{audio.setFilterType(numToFilterType(Number(controlList.filType.value)))})
-    controlList.filFreq.addEventListener("input", (e)=>{audio.setFilterFreq(Number(controlList.filFreq.value))})// TODO:
+    controlList.filFreq.addEventListener("input", (e)=>{
+        const value = new Log().value(Number(controlList.filFreq.value));
+        audio.setFilterFreq(value);
+    });
     controlList.filQ.addEventListener("input", (e)=>{audio.setFilterQ(Number(controlList.filQ.value))})
     controlList.filGain.addEventListener("input", (e)=>{audio.setFilterGain(Number(controlList.filGain.value))})
     controlList.filAttack.addEventListener("input", (e)=>{audio.setFilterAttack(Number(controlList.filAttack.value))})

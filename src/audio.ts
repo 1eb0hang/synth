@@ -1,4 +1,5 @@
 import NOTES from "./notes.js";
+import Log from "./temp/log.js";
 
 interface Envelope{
     attack:number;
@@ -90,8 +91,8 @@ class Synth{
 
         // TODO:Update ui and internal values to be insync before playing
         const osc = this.createOsc(this.osc1Type, NOTES[4][note]);
-        // const gain = this.createGain(osc, this.filter.node, 0);
-        const gain = this.createGain(osc, this.out, 0);
+        const gain = this.createGain(osc, this.filter.node, 0);
+        // const gain = this.createGain(osc, this.out, 0);
         
         gain.gain.setValueAtTime(0, this.ctx.currentTime);
 
@@ -208,6 +209,8 @@ class Synth{
 
     readonly setFilterFreq =(freq:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
+        // const newValue = this.LOG_BASE**freq;
+        // const newValue = Math.log10(freq)/Math.log10(1.003);
         this.filter.node.frequency.value = freq;
         console.log("New Filter Freq Vlue: ",freq);
     }
