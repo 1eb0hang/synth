@@ -6,14 +6,26 @@ import {setUpControlsEventLinsteners } from "./ui.js";
 
 const audio = new Synth();
 
-const Keydown = (key:string)=>{
+const Keydown = (e:KeyboardEvent, virtualKeyboard:NodeListOf<HTMLInputElement>)=>{
+    // e.preventDefault()
+    if (e.repeat) return;
+    
+    const key = e.key;
     if(key in KEYBOARD){
-        // playing = true;
+        // audio.setCurrentOctave();
+        audio.play(KEYBOARD[key].note as NoteName, audio.getCurrentOctave()+KEYBOARD[key].octave);
+        console.log("Playing ", key);
     }
 }
 
-const Keyup = (key:string)=>{
-    // playing = false;
+const Keyup = (e:KeyboardEvent, virtualKeyboard:NodeListOf<HTMLInputElement>)=>{
+    if (e.repeat) return;
+
+    const key = e.key;
+    if(key in KEYBOARD){
+        audio.stop(KEYBOARD[key].note as NoteName);
+        console.log("Stoping ", key);
+    }
 }
 
 
@@ -46,21 +58,22 @@ const main = ()=>{
         octaveDisplay.innerText = String(audio.getCurrentOctave());
     })
 
-    // document.addEventListener("keydown", (e:KeyboardEvent)=>{Keydown(e.key);})
-    // document.addEventListener("keyup", (e:KeyboardEvent)=>{Keyup(e.key);})
-
+    document.addEventListener("keydown", (e:KeyboardEvent)=>{Keydown(e, virtualKeyboard);})
+    document.addEventListener("keyup", (e:KeyboardEvent)=>{Keyup(e, virtualKeyboard);})
+    
     for(const key in virtualKeyboard){
         if(!(virtualKeyboard[key] instanceof HTMLInputElement)) continue;
-         
-        const self = virtualKeyboard[key];
-        self.addEventListener("mousedown", ()=>{
+        
+        const note = virtualKeyboard[key];
+        note.addEventListener("mousedown", ()=>{
             // TODO: check if mousemove while mousedown
             audio.play(virtualKeyboard[key].name as NoteName);
+            console.log("Playing ", key);
         })
 
-        self.addEventListener("mouseup", ()=>{
+        note.addEventListener("mouseup", ()=>{
             //TODO: check if mouse down happened on this key
-            audio.stop(virtualKeyboard[key].name);
+            audio.stop(virtualKeyboard[key].name as NoteName);
         })
 
         // TODO: switch to solidjs

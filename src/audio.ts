@@ -37,7 +37,7 @@ class Synth{
     private ctx:AudioContext|undefined;
     private out:AudioDestinationNode|undefined;
 
-    private CURRENT_OCTAVE = 1;
+    private CURRENT_OCTAVE = 4;
 
     private oscMix:number;
     private osc1Type:OscillatorType;
@@ -100,12 +100,15 @@ class Synth{
         this.osc1Type = controls.osc1Type.value as OscillatorType;
     }
 
-    readonly play = (note:NoteName):void=>{
+    readonly play = (note:NoteName, octave?:number):void=>{
         if(!this.ctx || ! this.out || !this.filter) throw new Error("Audio context not set");
 
         // TODO:Update ui and internal values to be insync before playing
-        const osc1 = this.createOsc(this.osc1Type, NOTES[this.CURRENT_OCTAVE][note]);
-        const osc2 = this.createOsc(this.osc2Type, NOTES[this.CURRENT_OCTAVE][note], this.osc2Cents);
+        let currentOct = octave||this.CURRENT_OCTAVE;
+        if(currentOct>7)currentOct = 7;
+        if(currentOct<1)currentOct = 1;
+        const osc1 = this.createOsc(this.osc1Type, NOTES[currentOct][note]);
+        const osc2 = this.createOsc(this.osc2Type, NOTES[currentOct][note], this.osc2Cents);
         // const nextNote = 
         // osc2.detune.value = NOTES[this.CURRENT_OCTAVE][note]-
 
