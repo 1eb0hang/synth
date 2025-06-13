@@ -26,17 +26,25 @@ const main = ()=>{
 
     const virtualKeyboard = document.querySelectorAll<HTMLInputElement>(".key");
     const buttons = document.querySelectorAll<HTMLInputElement>(".btnTranspose");
-    console.log(buttons);
     const transpose = {
         up:buttons[0].value == "+1"?buttons[0]:buttons[1],
         down:buttons[0].value == "-1"?buttons[0]:buttons[1]
     }
+    const octaveDisplay = document.querySelector<HTMLDivElement>(".currentOctave");
+    if(!octaveDisplay) throw new Error("Octave disply not initialised");
+    octaveDisplay.innerText = String(audio.getCurrentOctave());
 
     if (!virtualKeyboard) return;
     console.log("keboard initialised");
 
-    transpose.up.addEventListener("click",()=>{audio.setCurrentOctave(audio.getCurrentOctave()+1)})
-    transpose.down.addEventListener("click",()=>{audio.setCurrentOctave(audio.getCurrentOctave()-1)})
+    transpose.up.addEventListener("click",()=>{
+        audio.setCurrentOctave(audio.getCurrentOctave()+1);
+        octaveDisplay.innerText = String(audio.getCurrentOctave());
+    })
+    transpose.down.addEventListener("click",()=>{
+        audio.setCurrentOctave(audio.getCurrentOctave()-1);
+        octaveDisplay.innerText = String(audio.getCurrentOctave());
+    })
 
     // document.addEventListener("keydown", (e:KeyboardEvent)=>{Keydown(e.key);})
     // document.addEventListener("keyup", (e:KeyboardEvent)=>{Keyup(e.key);})

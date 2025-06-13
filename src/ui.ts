@@ -27,6 +27,13 @@ const updateValueWithUI=(uiComponent:HTMLInputElement, uiValue:number|string, au
     uiComponent.value = `${newVal}`;
 }
 
+// const setocsSliderWidth = ()=>{
+//     const osc = document.querySelector<HTMLDivElement>(".oscillators")?.querySelectorAll<HTMLLabelElement>("label");
+//     if (!osc) return;
+
+//     for()
+// }
+
 export const setUpControlsEventLinsteners = (audio:Synth)=>{
     if(!audio.isContextValid()) throw new Error("Valid audio context not found");
     console.log("Audio context nisialized");

@@ -1,6 +1,7 @@
  
 .lfo{
-
+    display:flex;
+    flex-direction: column;
     grid-column: 1 / 3;
 
     & > :last-child,

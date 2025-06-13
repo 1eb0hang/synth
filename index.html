@@ -9,45 +9,46 @@
 </head>
 <body>
     <div class="controls">
-        <div class="oscillators">
-            <span>Osc</span>
-            <div class="osc1">
-                <span>Osc1</span>
-                <div class="slider">
-                    <label for="osc1Type">Type</label>
-                    <input autocomplete="off" type="range" name="osc1Type" id="osc1Type" step="1" min="0" max="3">
+        <div class="oscillators section">
+            <span class="title">Oscillators</span>
+            <div class="content">
+                <div class="osc1">
+                    <span class="title">Osc1</span>
+                    <div class="slider">
+                        <label for="osc1Type">Type</label>
+                        <input autocomplete="off" type="range" name="osc1Type" id="osc1Type" step="1" min="0" max="3">
+                    </div>
+                    <div class="slider">
+                        <label for="oscMix">Mix</label>
+                        <input type="range" name="oscMix" id="oscMix" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
+                    </div>
                 </div>
-                <div class="slider">
-                    <label for="oscMix">Mix</label>
-                    <input type="range" name="oscMix" id="oscMix" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
-                </div>
-            </div>
-            <!-- <hr class="seperator subseparator"> -->
-            <div class="osc2">
-                <span>Osc2</span>
-                <div class="slider">
-                    <label for="osc2Type">Type</label>
-                    <input type="range" name="osc2Type" id="osc2Type" step="1" min="0" max="3" value="0" autocomplete="off">
-                </div>
-                <div class="slider">
-                    <label for="osc2Octave">Octave</label>
-                    <input type="range" name="osc2Octave" id="osc2Octave" step="1" min="-2" max="2" value="0" autocomplete="off">
-                </div>
-                <div class="slider">
-                    <label for="osc2Semis">Semis</label>
-                    <input type="range" name="osc2Semis" id="osc2Semis" step="1" min="-12" max="12" value="0" autocomplete="off">
-                </div>
-                <div class="slider">
-                    <label for="osc2Cents">Cents</label>
-                    <input type="range" name="osc2Cents" id="osc2Cents" step="0.01" min="-1" max="1" value="0" autocomplete="off">
+                <!-- <hr class="seperator subseparator"> -->
+                <div class="osc2">
+                    <span class="title">Osc2</span>
+                    <div class="slider">
+                        <label for="osc2Type">Type</label>
+                        <input type="range" name="osc2Type" id="osc2Type" step="1" min="0" max="3" value="0" autocomplete="off">
+                    </div>
+                    <div class="slider">
+                        <label for="osc2Octave">Octave</label>
+                        <input type="range" name="osc2Octave" id="osc2Octave" step="1" min="-2" max="2" value="0" autocomplete="off">
+                    </div>
+                    <div class="slider">
+                        <label for="osc2Semis">Semis</label>
+                        <input type="range" name="osc2Semis" id="osc2Semis" step="1" min="-12" max="12" value="0" autocomplete="off">
+                    </div>
+                    <div class="slider">
+                        <label for="osc2Cents">Cents</label>
+                        <input type="range" name="osc2Cents" id="osc2Cents" step="0.01" min="-1" max="1" value="0" autocomplete="off">
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="filter">
-                <span>Filter</span>
-                <div>
-
+        <div class="filter section">
+            <span class="title">Filter</span>
+            <div class="content">   
                 <div class="base">
                     <div class="slider vertical">
                         <label for="filType">Type</label>
@@ -67,6 +68,7 @@
                     </div>
                 </div>
                 <div class="adsr">
+                    <div class="disabled"><span>In Development</span></div>
                     <div class="slider vertical">
                         <label for="filAttack">A</label>
                         <input type="range" name="filAttack" id="filAttack" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
@@ -87,15 +89,16 @@
             </div>
         </div>
 
-        <div class="extra">
-            <span>in development</span>
+        <div class="extra section">
+            <div class="disabled"><span>In Development</span></div>
             <div class="visualiser"></div>
             <div class="empty"></div>
         </div>
 
-        <div class="lfo">
-            <span>LFO</span>
-            <div>
+        <div class="lfo section">
+            <div class="disabled"><span>In Development</span></div>
+            <span class="title">LFO</span>
+            <div class="content">
                 <div class="base">
                     <div class="slider">
                         <label for="lfoType">Type</label>
@@ -140,9 +143,9 @@
             </div>
         </div>
 
-        <div class="envelope">
-            <span>Amp</span>
-            <div>
+        <div class="envelope section">
+            <span class="title">Amp</span>
+            <div class="content">
                 <div class="adsr">
                     <div class="slider vertical">
                         <label for="attack">A</label>
@@ -200,18 +203,24 @@
                 <input type="button" value="" name="B"  id="B"  class="white key">
             </div>
         </div>
-        <div class="transpose">
-            <input type="button" value="+1" class="btnTranspose">
-            <input type="button" value="-1" class="btnTranspose">
+        <div class="keyboardTools">
+            <div class="transpose">
+                <input type="button" value="+1" class="btnTranspose">
+                <input type="button" value="-1" class="btnTranspose">
+            </div>
+            <div class="OctaveDisplay">
+                <span class="currentOctave"></span>
+            </div>
         </div>
     </div>
     <!-- Tick markers -->
-    <datalist id="markers">
-  <option value="0"></option>
-  <option value="25"></option>
-  <option value="50"></option>
-  <option value="75"></option>
-  <option value="100"></option>
-</datalist>
 </body>
+
+    <!-- <datalist id="markers">
+        <option value="0"></option>
+        <option value="25"></option>
+        <option value="50"></option>
+        <option value="75"></option>
+        <option value="100"></option>
+    </datalist> -->
 </html>

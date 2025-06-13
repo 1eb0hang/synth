@@ -7,30 +7,39 @@
 
     font-family: sans;
     color: #efefefff;
+    position:relative;
+    box-sizing: border-box;
 }
 
 body{
+    position: relative;
+    display:flex;
+    flex-direction: column;
     height: 100vh;
     width: 100vw;
     
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     /* overflow: hidden; */
-    background: #222222ff;
+    background: #333333ff;
     /* overflow:hidden; */
+    user-select: none;
 }
 
 .controls{
+    width:100%;
+    height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
 
 div{
-    border:solid 1px white;
+    & input[type="range"]{
+        border:solid 1px white;
+    }
 }
 
 .extra{
-    background-color: blue;
     width:auto;
     height: 100%;
 }
@@ -43,9 +52,44 @@ div{
 .transpose{
     display:grid;
     grid-template-rows: 1fr 1fr;
-    border-radius: 0;
-
+    
     & .btnTranspose{
+        border-radius: 5px;
         color:#00000055;
     }
+}
+
+.disabled{
+    position:absolute;
+    background-color: #00000066;
+    backdrop-filter: blur(5px);
+    z-index:2;
+
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+    border:solid 1px white;
+
+}
+
+.device{
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+}
+
+.title{
+    font-size: 1rem;
+    padding:5px;
+}
+.content{
+    /* background-color: red;; */
+    /* padding:20px; */
+}
+
+.section{
+    border:1px dotted #ffffff30;
 }
