@@ -1,0 +1,11 @@
+
+.filter{
+    display:flex;
+    flex-direction: column;
+    & > :last-child, 
+    & .adsr,
+    & .base{
+        display: flex;
+        flex-direction: row;
+    }
+}
