@@ -19,7 +19,7 @@ const Keyup = (e, virtualKeyboard) => {
         return;
     const key = e.key;
     if (key in KEYBOARD) {
-        audio.stop(KEYBOARD[key].note);
+        audio.stop(KEYBOARD[key].note, audio.getCurrentOctave() + KEYBOARD[key].octave);
         console.log("Stoping ", key);
     }
 };
