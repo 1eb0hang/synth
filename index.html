@@ -15,11 +15,11 @@
                 <span>Osc1</span>
                 <div class="slider">
                     <label for="osc1Type">Type</label>
-                    <input type="range" name="osc1Type" id="osc1Type" step="1" min="0" max="3">
+                    <input autocomplete="off" type="range" name="osc1Type" id="osc1Type" step="1" min="0" max="3">
                 </div>
                 <div class="slider">
-                    <label for="osc1Mix">Mix</label>
-                    <input type="range" name="osc1Mix" id="osc1Mix" step="0.01" min="0" max="1" value="0.5">
+                    <label for="oscMix">Mix</label>
+                    <input type="range" name="oscMix" id="oscMix" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                 </div>
             </div>
             <!-- <hr class="seperator subseparator"> -->
@@ -27,19 +27,19 @@
                 <span>Osc2</span>
                 <div class="slider">
                     <label for="osc2Type">Type</label>
-                    <input type="range" name="osc2Type" id="osc2Type" step="1" min="0" max="3" value="0">
+                    <input type="range" name="osc2Type" id="osc2Type" step="1" min="0" max="3" value="0" autocomplete="off">
                 </div>
                 <div class="slider">
                     <label for="osc2Octave">Octave</label>
-                    <input type="range" name="osc2Octave" id="osc2Octave" step="1" min="-2" max="2" value="0">
+                    <input type="range" name="osc2Octave" id="osc2Octave" step="1" min="-2" max="2" value="0" autocomplete="off">
                 </div>
                 <div class="slider">
                     <label for="osc2Semis">Semis</label>
-                    <input type="range" name="osc2Semis" id="osc2Semis" step="1" min="-12" max="12" value="0">
+                    <input type="range" name="osc2Semis" id="osc2Semis" step="1" min="-12" max="12" value="0" autocomplete="off">
                 </div>
                 <div class="slider">
                     <label for="osc2Cents">Cents</label>
-                    <input type="range" name="osc2Cents" id="osc2Cents" step="1" min="-100" max="100" value="0">
+                    <input type="range" name="osc2Cents" id="osc2Cents" step="1" min="-100" max="100" value="0" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -51,37 +51,37 @@
                 <div class="base">
                     <div class="slider vertical">
                         <label for="filType">Type</label>
-                        <input type="range" name="filType" id="filType" step="1" min="0" max="6" value="0">
+                        <input type="range" name="filType" id="filType" step="1" min="0" max="6" value="0" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filFreq">Frequency</label>
-                        <input type="range" name="filFreq" id="filFreq"  step="1" min="1" max="100" value="0">
+                        <input type="range" name="filFreq" id="filFreq"  step="1" min="1" max="100" value="100" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filQ">Ressinance</label>
-                        <input type="range" name="filQ" id="filQ">
+                        <input type="range" name="filQ" id="filQ" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filGain">Gain</label>
-                        <input type="range" name="filGain" id="filGain" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="filGain" id="filGain" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                 </div>
                 <div class="adsr">
                     <div class="slider vertical">
                         <label for="filAttack">A</label>
-                        <input type="range" name="filAttack" id="filAttack" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="filAttack" id="filAttack" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filDecay">D</label>
-                        <input type="range" name="filDecay" id="filDecay" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="filDecay" id="filDecay" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filSustain">S</label>
-                        <input type="range" name="filSustain" id="filSustain" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="filSustain" id="filSustain" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filContour">Contour</label>
-                        <input type="range" name="filContour" id="filContour" step="0.01" min="-1" max="1" value="0">
+                        <input type="range" name="filContour" id="filContour" step="0.01" min="-1" max="1" value="0" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -99,42 +99,42 @@
                 <div class="base">
                     <div class="slider">
                         <label for="lfoType">Type</label>
-                        <input type="range" name="lfoType" id="lfoType" step="1" min="0" max="3" value="0">
+                        <input type="range" name="lfoType" id="lfoType" step="1" min="0" max="3" value="0" autocomplete="off">
                     </div>
                     <div class="slider">
                         <label for="lfoRate">Rate</label>
-                        <input type="range" name="lfoRate" id="lfoRate">
+                        <input type="range" name="lfoRate" id="lfoRate" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                 </div>
         
                 <div class="mod">
                     <div class="slider vertical">
                         <label for="oscModMix">Osc Mix</label>
-                        <input type="range" name="oscModMix" id="oscModMix">
+                        <input type="range" name="oscModMix" id="oscModMix" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="oscModPitch">Osc Pitch</label>
-                        <input type="range" name="oscModPitch" id="oscModPitch">
+                        <input type="range" name="oscModPitch" id="oscModPitch" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="oscModSemi">Osc Semis</label>
-                        <input type="range" name="oscModSemi" id="oscModSemi">
+                        <input type="range" name="oscModSemi" id="oscModSemi" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="oscModCents">Osc Cents</label>
-                        <input type="range" name="oscModCents" id="oscModCents">
+                        <input type="range" name="oscModCents" id="oscModCents" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filModFreq">Fil Freq</label>
-                        <input type="range" name="filModFreq" id="filModFreq">
+                        <input type="range" name="filModFreq" id="filModFreq" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="filModQ">Fil Q</label>
-                        <input type="range" name="filModQ" id="filModQ">
+                        <input type="range" name="filModQ" id="filModQ" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                     <div class="slider  vertical">
                         <label for="filModGain">Fil. Gain</label>
-                        <input type="range" name="filModGain" id="filModGain">
+                        <input type="range" name="filModGain" id="filModGain" step="0.01" min="0" max="1" value="0" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -146,24 +146,24 @@
                 <div class="adsr">
                     <div class="slider vertical">
                         <label for="attack">A</label>
-                        <input type="range" name="attack" id="attack" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="attack" id="attack" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="decay">D</label>
-                        <input type="range" name="decay" id="decay" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="decay" id="decay" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="sustain">S</label>
-                        <input type="range" name="sustain" id="sustain" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="sustain" id="sustain" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                     <div class="slider vertical">
                         <label for="release">R</label>
-                        <input type="range" name="release" id="release" step="0.01" min="0" max="1" value="0.5">
+                        <input type="range" name="release" id="release" step="0.01" min="0" max="1" value="0.5" autocomplete="off">
                     </div>
                 </div>
                 <div class="volume slider vertical">
                     <label for="volume">Volume</label>
-                    <input type="range" name="volume" id="volume" step="0.01" min="0" max="1">
+                    <input type="range" name="volume" id="volume" step="0.01" min="0" max="1" value="0.7" autocomplete="off">
                 </div>
             </div>
         </div> 

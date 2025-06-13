@@ -21,12 +21,10 @@ export const getSynthControls = ():ControlList =>{
     return controlList;
 }
 
-const numToFilterType = (number:number)=>{
-    return ["lowpass","highpass","bandpass","lowshelf","highshelf","peaking","notch","allpass"][number] as BiquadFilterType;
-}
-
-const numToOscType = (number:number)=>{
-    return ["sine","triangle","square","sawtooth"][number] as OscillatorType;
+const updateValueWithUI=(uiComponent:HTMLInputElement, uiValue:number|string, audioSet:(value:number)=>void)=>{
+    const newVal = Number(uiValue);
+    audioSet(newVal);
+    uiComponent.value = `${newVal}`;
 }
 
 export const setUpControlsEventLinsteners = (audio:Synth)=>{
@@ -34,15 +32,17 @@ export const setUpControlsEventLinsteners = (audio:Synth)=>{
     console.log("Audio context nisialized");
 
     const controlList = getSynthControls();
+    audio.update(controlList);
     
-    controlList.osc1Type.addEventListener("input", (e)=>{audio.setOsc1Type(numToOscType(Number(controlList.osc1Type.value)))})
-    controlList.osc1Mix.addEventListener("input", (e)=>{})
+    controlList.osc1Type.addEventListener("input", (e)=>{updateValueWithUI(controlList.osc1Type, controlList.osc1Type.value,audio.setOsc1Type)})
+    // controlList.osc1Type.addEventListener("input", (e)=>{audio.setOsc1Type(Number(controlList.osc1Type.value))})
+    controlList.oscMix.addEventListener("input", (e)=>{audio.setOscMix(Number(controlList.oscMix.value))})
     // controlList.osc2Type.addEventListener("input", (e)=>{audio.setOsc1Type(numToOscType(Number(controlList.osc1Type.value)))})
     controlList.osc2Octave.addEventListener("input", (e)=>{})
     controlList.osc2Semis.addEventListener("input", (e)=>{})
     controlList.osc2Cents.addEventListener("input", (e)=>{})
 
-    controlList.filType.addEventListener("input", (e)=>{audio.setFilterType(numToFilterType(Number(controlList.filType.value)))})
+    controlList.filType.addEventListener("input", (e)=>{audio.setFilterType(Number(controlList.filType.value))})
     controlList.filFreq.addEventListener("input", (e)=>{
         const value = new Log().value(Number(controlList.filFreq.value));
         audio.setFilterFreq(value);

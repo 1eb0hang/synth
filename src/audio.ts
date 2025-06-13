@@ -26,8 +26,8 @@ interface Settings{
 
 type PlayingList = {
     [index:string]:{
-        osc:OscillatorNode, 
-        gain:GainNode, 
+        osc:OscillatorNode[], 
+        gain:GainNode[],
         playing:boolean
     }
 }
@@ -37,8 +37,9 @@ class Synth{
     private ctx:AudioContext|undefined;
     private out:AudioDestinationNode|undefined;
 
+    private oscMix:number;
     private osc1Type:OscillatorType;
-    // private osc2Type:OscillatorType;
+    private osc2Type:OscillatorType;
     // private osc2Octave:number;
     
     private filter:Filter|undefined;
@@ -60,7 +61,9 @@ class Synth{
             release:0.2
         };
 
+        this.oscMix = 0;
         this.osc1Type = "square";
+        this.osc2Type = "sine";
         this.PLAYING = {};
         this.MAX_ENV_TIME = 2;
     }
@@ -83,29 +86,41 @@ class Synth{
             contour:0
         };
         this.filter.node.type = "lowpass";
-        this.globalVolume = this.createGain(this.filter.node, this.out, 1);
+        this.globalVolume = this.createGain([this.filter.node], this.out, 1);
+    }
+
+    readonly update=(controls:{[index:string]:HTMLInputElement})=>{
+        this.osc1Type = controls.osc1Type.value as OscillatorType;
     }
 
     readonly play = (note:string):void=>{
         if(!this.ctx || ! this.out || !this.filter) throw new Error("Audio context not set");
 
         // TODO:Update ui and internal values to be insync before playing
-        const osc = this.createOsc(this.osc1Type, NOTES[4][note]);
-        const gain = this.createGain(osc, this.filter.node, 0);
+        const osc1 = this.createOsc(this.osc1Type, NOTES[4][note]);
+        const osc2 = this.createOsc(this.osc2Type, NOTES[4][note]);
+        const gain1 = this.createGain([osc1], this.filter.node, 0);
+        const gain2 = this.createGain([osc2], this.filter.node, 0);
         // const gain = this.createGain(osc, this.out, 0);
         
-        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain1.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain2.gain.setValueAtTime(0, this.ctx.currentTime);
 
-        this.PLAYING[note] = {osc:osc, gain:gain, playing:true};
+        this.PLAYING[note] = {osc:[osc1, osc2], gain:[gain1, gain2], playing:true};
 
-        osc.start();
-        this.setGainEnvelopeEnter(gain);
+        osc1.start();
+        osc2.start();
+        this.setGainEnvelopeEnter(gain1, 1-this.oscMix);
+        this.setGainEnvelopeEnter(gain2, this.oscMix);
     }
 
     readonly stop = (note:string):void =>{
         this.PLAYING[note].playing = false;
         const {gain} = this.PLAYING[note];
-        this.setGainEnvelopExit(gain);
+        const {osc} = this.PLAYING[note];
+        
+        this.setGainEnvelopExit(gain[0]);
+        this.setGainEnvelopExit(gain[1]);
         delete this.PLAYING[note];
     }
 
@@ -120,19 +135,22 @@ class Synth{
         return osc;
     }
 
-    private readonly createGain = (prevNode:AudioNode, nextNode:AudioNode, startingVolume?:number):GainNode=>{
+    private readonly createGain = (prevNodes:AudioNode[], nextNode:AudioNode, startingVolume?:number):GainNode=>{
         if(!this.ctx || !this.out) throw new Error("Audio context not set");
         
         const gain = this.ctx.createGain();
         gain.gain.value = startingVolume||0;
-        prevNode.connect(gain);
+        
+        for (const node in prevNodes){
+            prevNodes[node].connect(gain);
+        }
 
         gain.connect(nextNode);
 
         return gain;
     }
 
-    private readonly setGainEnvelopeEnter = (gain:GainNode)=>{
+    private readonly setGainEnvelopeEnter = (gain:GainNode, scale = 1)=>{
         if(!this.ctx) throw new Error("Audio context not set");
         
         const {currentTime} = this.ctx;
@@ -142,8 +160,8 @@ class Synth{
         const attackEnd = currentTime+(this.envelope.attack * this.MAX_ENV_TIME);
         const decayEnd = (this.envelope.decay * this.MAX_ENV_TIME);
 
-        gain.gain.linearRampToValueAtTime(1,attackEnd);
-        gain.gain.setTargetAtTime(this.envelope.sustain, attackEnd, decayEnd);
+        gain.gain.linearRampToValueAtTime(1*scale,attackEnd);
+        gain.gain.setTargetAtTime(this.envelope.sustain*scale, attackEnd, decayEnd);
     }
 
     private readonly setGainEnvelopExit = (gain:GainNode)=>{
@@ -162,8 +180,18 @@ class Synth{
     }
 
     // OSCILLATORS
-    readonly setOsc1Type = (type:OscillatorType)=>{
-        this.osc1Type = type;
+    readonly setOscMix = (mix:number)=>{
+        this.oscMix = mix;
+        console.log("New Osc type: ", mix);
+    }
+
+    readonly setOsc1Type = (type:number)=>{
+        this.osc1Type = this.numToOscType(type);
+        console.log("New Osc type: ", type);
+    }
+
+    readonly setOsc2Type = (type:number)=>{
+        this.osc2Type = this.numToOscType(type);
         console.log("New Osc type: ", type);
     }
 
@@ -201,9 +229,9 @@ class Synth{
     }
 
     // FILTERS
-    readonly setFilterType =(type:BiquadFilterType)=>{
+    readonly setFilterType =(type:number)=>{
         if(!this.filter) throw new Error("Audio context not set");
-        this.filter.node.type = type;
+        this.filter.node.type = this.numToFilterType(type);
         console.log("New Filter Type: ",type)
     }
 
@@ -256,6 +284,14 @@ class Synth{
 
         this.globalVolume.gain.value = value;
         console.log("New volume: ",value);
+    }
+
+    private readonly numToFilterType = (number:number)=>{
+        return ["lowpass","highpass","bandpass","lowshelf","highshelf","peaking","notch","allpass"][number] as BiquadFilterType;
+    }
+    
+    private readonly numToOscType = (number:number)=>{
+        return ["sine","triangle","square","sawtooth"][number] as OscillatorType;
     }
 }
 
